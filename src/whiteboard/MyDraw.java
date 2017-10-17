@@ -9,7 +9,9 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import remote.IRemoteClient;
 import remote.IServerOperation;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -36,6 +39,10 @@ public class MyDraw extends JFrame {
 
 	private int clientID;
 	private IServerOperation remoteserver;
+	
+	private JScrollPane scrollPane;
+	DefaultListModel listModel;
+	JList list;
 	
 	public JFrame frame;
 	public MyPanel mp = null;
@@ -65,6 +72,8 @@ public class MyDraw extends JFrame {
 	private boolean isSave = false;
 	private String path = null;
 	
+	
+	private String[] user_list={"a","b","c"};
 	/**
 	 * Launch the application.
 	 
@@ -105,6 +114,11 @@ public class MyDraw extends JFrame {
 		mp.setLayout(null);
 		//mp.setOpaque(false);
 		frame.getContentPane().add(mp);
+		
+
+		JList jl=new JList(user_list);
+		jl.setBounds(1160, 400, 100, 200);
+		frame.getContentPane().add(jl);
 		
 		String strColor[] = { "black", "blue", "cyan", "dark gray", "gray", "light gray", "green", "magenta", "orange",
 				"pink", "red", "white", "yellow" };
@@ -385,6 +399,13 @@ public class MyDraw extends JFrame {
 			}
 			
 		});
+		
+		//JList
+		listModel= new DefaultListModel();
+		list = new JList(listModel);
+		scrollPane = new JScrollPane(list,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(1044, 42, 120, 142);
+		frame.getContentPane().add(scrollPane);
 	}
 	
 	// open save and saveas methods

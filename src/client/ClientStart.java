@@ -20,6 +20,7 @@ public class ClientStart {
 		
 		IRoomManagement sharedCanvas = (IRoomManagement) registry.lookup(IRoomManagement.LOOKUP_NAME);
 		
+		System.out.println("asd\n");
 		System.out.println("Input:");
 		Scanner sc = new Scanner(System.in);
 		String roomname = sc.next();
