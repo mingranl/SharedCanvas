@@ -7,6 +7,8 @@ import java.awt.EventQueue;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.TextArea;
+import java.awt.TextField;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -28,6 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
@@ -72,7 +77,13 @@ public class MyDraw extends JFrame {
 	private boolean isSave = false;
 	private String path = null;
 	
+	//chat
+	private String user_name="Misakaaa";
+	private String current_time=null;
+	public static final int CHATMAX=100;
+	private ArrayList<String> chatHistory=new ArrayList<String>(CHATMAX);
 	
+
 	private String[] user_list={"a","b","c"};
 	/**
 	 * Launch the application.
@@ -110,20 +121,46 @@ public class MyDraw extends JFrame {
 		
 		mp = new MyPanel(clientID, remoteserver);
 		mp.setBackground(Color.WHITE);
-		mp.setBounds(210, 100, 1300, 500);
+		mp.setBounds(210, 100, 800, 500);
 		mp.setLayout(null);
 		//mp.setOpaque(false);
 		frame.getContentPane().add(mp);
 		
-
-		JList jl=new JList(user_list);
-		jl.setBounds(1160, 400, 100, 200);
-		frame.getContentPane().add(jl);
+		//chat area
+		 TextArea ta = new TextArea();
+		 ta.setBounds(1300, 10, 400, 500);
+		 
+		  //input area
+		 TextField tf = new TextField();
+		 tf.setBounds(1300,600,400,100);
+		 tf.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String text=tf.getText().trim();
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//set time format
+					current_time=sdf.format(new Date());// new Date(): get current time
+					
+					String message="\n"+user_name+"  "+current_time+"\n"+text+"\n";
+					chatHistory.add(message);
+					
+					String op="";
+					
+					for(int i=0;i<chatHistory.size();i++){
+						op+=chatHistory.get(i);
+					      ta.setText(op); 
+					      tf.setText(""); 
+					}
+				}
+			});
+		 
+		 frame.getContentPane().add(ta);
+		 frame.getContentPane().add(tf);
 		
+		 //color
 		String strColor[] = { "black", "blue", "cyan", "dark gray", "gray", "light gray", "green", "magenta", "orange",
 				"pink", "red", "white", "yellow" };
 		jcb_color = new JComboBox(strColor);
-		jcb_color.setBounds(1550, 150, 100, 30);
+		jcb_color.setBounds(460, 10, 100, 30);
 		jcb_color.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				int index=jcb_color.getSelectedIndex();
@@ -133,9 +170,10 @@ public class MyDraw extends JFrame {
 		});
 		frame.getContentPane().add(jcb_color);
 		
+		//stroke
 		String strStroke[]={"1","2","3","4","5"};
 		jcb_stroke=new JComboBox(strStroke);
-		jcb_stroke.setBounds(1550, 400, 100, 30);
+		jcb_stroke.setBounds(610, 10, 100, 30);
 		jcb_stroke.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				int index=jcb_stroke.getSelectedIndex();
